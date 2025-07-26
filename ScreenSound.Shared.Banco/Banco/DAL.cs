@@ -1,13 +1,15 @@
-﻿namespace ScreenSound.Banco;
+﻿using ScreenSound.Modelos;
 
-internal class DAL<T> where T : class
+namespace ScreenSound.Banco;
+
+public class DAL<T> where T : class
 {
-    protected readonly ScreenSoundContext context;
+    private readonly ScreenSoundContext context;
 
     public DAL(ScreenSoundContext context)
     {
         this.context = context;
-    } 
+    }
 
     public IEnumerable<T> Listar()
     {
@@ -33,7 +35,7 @@ internal class DAL<T> where T : class
     }
 
     public T? RecuperarPor(Func<T, bool> condicao)
-    { 
+    {
         return context.Set<T>().FirstOrDefault(condicao);
     }
 

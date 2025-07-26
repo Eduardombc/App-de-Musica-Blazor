@@ -1,5 +1,6 @@
-﻿using ScreenSound.Banco;
-using ScreenSound.Modelos;
+﻿using ScreenSound.Modelos;
+using ScreenSound.Banco;
+
 
 namespace ScreenSound.Menus;
 
@@ -11,9 +12,9 @@ internal class MenuMusicasPorAno : Menu
         ExibirTituloDaOpcao("Mostrar música por ano de lançamento");
         Console.Write("Digite o ano para consultar músicas: ");
         string anoDaMusica = Console.ReadLine()!;
-        var musicaDAL = new DAL<Musica>(new ScreenSoundContext);
+        var musicaDAL = new DAL<Musica>(new ScreenSoundContext());
         var listaAnoLancamento = musicaDAL.ListarPor(a => a.AnoLancamento == Convert.ToInt32(anoDaMusica));
-        if(listaAnoLancamento.Any())
+        if (listaAnoLancamento.Any())
         {
             Console.WriteLine($"\nMúsicas lançadas no ano de {anoDaMusica}:");
             foreach (var musica in listaAnoLancamento)
