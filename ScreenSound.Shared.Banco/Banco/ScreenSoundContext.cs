@@ -13,8 +13,7 @@ public class ScreenSoundContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseSqlServer(conectionString)
-            .UseLazyLoadingProxies();
+            .UseSqlServer(conectionString);
     }
 }
 

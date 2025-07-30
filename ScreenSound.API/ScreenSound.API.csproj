@@ -16,4 +16,8 @@
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.14" />
   </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ScreenSound.Shared.Banco\ScreenSound.Shared.Dados.csproj" />
+    </ItemGroup>
+
 </Project>
