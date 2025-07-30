@@ -20,4 +20,8 @@
       <ProjectReference Include="..\ScreenSound.Shared.Banco\ScreenSound.Shared.Dados.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="EndPoints\" />
+    </ItemGroup>
+
 </Project>
