@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using ScreenSound.API.Requests;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 
@@ -26,15 +28,15 @@ public static class ArtistasExtensions
             }
         });
 
-        app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] Artista artista) =>
+        app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] ArtistaRequest artistaRequest) =>
         {
-            dal.Adicionar(artista);
+            dal.Adicionar(new Artista(artistaRequest.nome, artistaRequest.bio));
             return Results.Ok();
         });
 
         app.MapDelete("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>
         {
-            var artista = dal.RecuperarPor(a => a.Id == id);
+            var artista = dal.RecuperarPor(a => a.ArtistaId == id);
             if (artista == null)
             {
                 return Results.NotFound();
@@ -46,21 +48,30 @@ public static class ArtistasExtensions
             }
         });
 
-        app.MapPut("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] Artista artista) =>
+        app.MapPut("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
         {
-            var artistaExistente = dal.RecuperarPor(a => a.Id == id);
+            var artistaExistente = dal.RecuperarPor(a => a.ArtistaId == artistaRequestEdit.id);
             if (artistaExistente == null)
             {
                 return Results.NotFound();
             }
             else
             {
-                artista.Nome = artistaExistente.Nome;
-                artista.Bio = artistaExistente.Bio;
-                artista.FotoPerfil = artistaExistente.FotoPerfil;
-                dal.Atualizar(artista);
+                artistaExistente.Nome = artistaRequestEdit.nome;
+                artistaExistente.Bio = artistaRequestEdit.bio;
+                dal.Atualizar(artistaExistente);
                 return Results.Ok();
             }
         });
-    }
+
+        private static ICollection<ArtistaResponse> EntityListToResponseList(IEnumerable<Artista> listaDeArtistas)
+        {
+            return listaDeArtistas.Select(a => EntityToResponse(a)).ToList();
+        }
+
+        private static ArtistaResponse EntityToResponse(Artista artista)
+        {
+            return new ArtistaResponse(artista.ArtistaId, artista.Nome, artista.Bio, artista.FotoPerfil);
+        }
 }
+
