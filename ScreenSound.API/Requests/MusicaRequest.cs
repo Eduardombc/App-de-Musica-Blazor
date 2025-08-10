@@ -3,4 +3,4 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ScreenSound.API.Requests;
 
-public record MusicaRequest ([Required] string Nome, [Required] int Id, int AnoLancamento);
+public record MusicaRequest (string Nome, int Id, int AnoLancamento);
