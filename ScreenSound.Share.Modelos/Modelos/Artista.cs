@@ -2,7 +2,7 @@
 
 public class Artista 
 {
-    public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
+    public virtual ICollection<Musica> Generos { get; set; } = new List<Musica>();
 
     public Artista(string nome, string bio)
     {
@@ -18,13 +18,13 @@ public class Artista
 
     public void AdicionarMusica(Musica musica)
     {
-        Musicas.Add(musica);
+        Generos.Add(musica);
     }
 
     public void ExibirDiscografia()
     {
         Console.WriteLine($"Discografia do artista {Nome}");
-        foreach (var musica in Musicas)
+        foreach (var musica in Generos)
         {
             Console.WriteLine($"Música: {musica.Nome}");
             Console.WriteLine($"Ano de Lançamento: {musica.AnoLancamento}");

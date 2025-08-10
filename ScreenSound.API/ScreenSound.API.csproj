@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EndPoints\Genero.cs" />
     <Compile Remove="Requests\Class.cs" />
     <Compile Remove="Requests\Class1.cs" />
   </ItemGroup>
@@ -29,10 +30,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ScreenSound.Shared.Banco\ScreenSound.Shared.Dados.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="EndPoints\" />
     </ItemGroup>
 
 </Project>

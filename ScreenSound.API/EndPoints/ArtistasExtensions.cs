@@ -50,7 +50,7 @@ public static class ArtistasExtensions
 
         app.MapPut("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
         {
-            var artistaExistente = dal.RecuperarPor(a => a.ArtistaId == artistaRequestEdit.id);
+            var artistaExistente = dal.RecuperarPor(a => a.ArtistaId == artistaRequestEdit.ArtistaId);
             if (artistaExistente == null)
             {
                 return Results.NotFound();
@@ -63,15 +63,17 @@ public static class ArtistasExtensions
                 return Results.Ok();
             }
         });
+    }
+    private static ICollection<ArtistaResponse> EntityListToResponseList(IEnumerable<Artista> listaDeArtistas)
+    {
+        return listaDeArtistas.Select(a => EntityToResponse(a)).ToList();
+    }
 
-        private static ICollection<ArtistaResponse> EntityListToResponseList(IEnumerable<Artista> listaDeArtistas)
-        {
-            return listaDeArtistas.Select(a => EntityToResponse(a)).ToList();
-        }
+    private static ArtistaResponse EntityToResponse(Artista artista)
+    {
+        return new ArtistaResponse(artista.ArtistaId, artista.Nome, artista.Bio, artista.FotoPerfil);
+    }
 
-        private static ArtistaResponse EntityToResponse(Artista artista)
-        {
-            return new ArtistaResponse(artista.ArtistaId, artista.Nome, artista.Bio, artista.FotoPerfil);
-        }
+
 }
 

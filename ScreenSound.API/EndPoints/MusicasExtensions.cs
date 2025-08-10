@@ -18,7 +18,7 @@ public static class MusicasExtensions
 
         app.MapGet("/Musicas/{Nome}", ([FromServices] DAL<Artista> dal, string Nome) =>
         {
-            var musica = dal.RecuperarPor(a => a.Musicas.Any(m => m.Nome.ToLower() == Nome.ToLower()));
+            var musica = dal.RecuperarPor(a => a.Generos.Any(m => m.Nome.ToLower() == Nome.ToLower()));
             if (musica == null)
             {
                 return Results.NotFound();
@@ -31,8 +31,13 @@ public static class MusicasExtensions
 
         app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequest musicaRequest) =>
         {
-            dal.Adicionar(new Musica(musicaRequest.nome));
-            return Results.Ok();
+            var musica = new Musica(musicaRequest.Nome)
+            {
+                Id = musicaRequest.Id,
+                AnoLancamento = musicaRequest.AnoLancamento,
+                Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(musicaRequest.Generos) : new List<Genero>()
+            };
+
         });
 
         app.MapDelete("/Musicas/{id}", ([FromServices] DAL<Artista> dal, int id) =>
@@ -64,15 +69,25 @@ public static class MusicasExtensions
                 return Results.Ok();
             }
         });
+    }
 
-        private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> musicaList)
-        {
-            return musicaList.Select(a => EntityToResponse(a)).ToList();
-        }
+    private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos)
+    {
+        return generos.Select(a => RequestToEntity(a)).ToList();
+    }
 
-        private static MusicaResponse EntityToResponse(Musica musica)
-        {
-            return new MusicaResponse(musica.Id, musica.Nome!, musica.Artista!.ArtistaId, musica.Artista.Nome);
-        }
+    private static Genero RequestToEntity(GeneroRequest genero)
+    {
+        return new Genero() { Nome = genero.Nome, Descricao = genero.Descricao };
+    }
+    private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> musicaList)
+    {
+        return musicaList.Select(a => EntityToResponse(a)).ToList();
+    }
+
+    private static MusicaResponse EntityToResponse(Musica musica)
+    {
+        return new MusicaResponse(musica.Id, musica.Nome!, musica.Artista!.ArtistaId, musica.Artista.Nome);
+    }
 }
 
