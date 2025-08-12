@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Requests;
+using ScreenSound.API.Response;
 using ScreenSound.Banco;
 
 public static class GeneroExtensions

@@ -19,13 +19,27 @@ internal class Program
 
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
+
+
         var app = builder.Build();
+        app.UseCors();
+
 
         app.AddEndPointsArtistas();
-        app.AddExtensionsMusicas();
+        app.AddEndPointsMusicas();
+        app.AddEndPointGeneros();
         app.UseSwagger();
         app.UseSwaggerUI();
-
+        app.UseHttpsRedirection();
         app.Run();
     }
 }
