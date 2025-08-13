@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 using ScreenSound.Web.Services;
 using ScreenSound.WEB;
 
@@ -9,8 +10,10 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddTransient<ArtistaAPI>();
 
+builder.Services.AddMudServices();
+
 builder.Services.AddHttpClient("API", client => {
-    client.BaseAddress = new Uri("https://localhost:7008/");
+    client.BaseAddress = new Uri(builder.Configuration["APIServer:Url"]!);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 

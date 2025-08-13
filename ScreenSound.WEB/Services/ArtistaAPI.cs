@@ -14,4 +14,5 @@ public class ArtistaAPI
     {
         return await _httpClient.GetFromJsonAsync<ICollection<ArtistaResponse>>("Artistas");
     }
+
 }
