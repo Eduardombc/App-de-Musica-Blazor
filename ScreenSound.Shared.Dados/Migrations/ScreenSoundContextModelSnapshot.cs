@@ -7,7 +7,7 @@ using ScreenSound.Banco;
 
 #nullable disable
 
-namespace ScreenSound.Migrations
+namespace ScreenSound.Shared.Dados.Migrations
 {
     [DbContext(typeof(ScreenSoundContext))]
     partial class ScreenSoundContextModelSnapshot : ModelSnapshot
@@ -37,6 +37,38 @@ namespace ScreenSound.Migrations
                     b.HasIndex("MusicasId");
 
                     b.ToTable("GeneroMusica");
+
+                    b.HasData(
+                        new
+                        {
+                            GenerosId = 2,
+                            MusicasId = 1
+                        },
+                        new
+                        {
+                            GenerosId = 2,
+                            MusicasId = 2
+                        },
+                        new
+                        {
+                            GenerosId = 1,
+                            MusicasId = 3
+                        },
+                        new
+                        {
+                            GenerosId = 1,
+                            MusicasId = 4
+                        },
+                        new
+                        {
+                            GenerosId = 1,
+                            MusicasId = 5
+                        },
+                        new
+                        {
+                            GenerosId = 3,
+                            MusicasId = 5
+                        });
                 });
 
             modelBuilder.Entity("ScreenSound.Modelos.Artista", b =>
@@ -62,6 +94,29 @@ namespace ScreenSound.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Artistas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Bio = "Um dos maiores cantores e compositores da MPB...",
+                            FotoPerfil = "url-da-foto-djavan",
+                            Nome = "Djavan"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Bio = "Banda de rock irlandesa formada em 1976...",
+                            FotoPerfil = "url-da-foto-u2",
+                            Nome = "U2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Bio = "Banda de rock britânica formada em Londres em 1970...",
+                            FotoPerfil = "url-da-foto-queen",
+                            Nome = "Queen"
+                        });
                 });
 
             modelBuilder.Entity("ScreenSound.Modelos.Musica", b =>
@@ -87,6 +142,43 @@ namespace ScreenSound.Migrations
                     b.HasIndex("ArtistaId");
 
                     b.ToTable("Musicas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnoLancamento = 1982,
+                            ArtistaId = 1,
+                            Nome = "Sina"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AnoLancamento = 1989,
+                            ArtistaId = 1,
+                            Nome = "Oceano"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AnoLancamento = 1987,
+                            ArtistaId = 2,
+                            Nome = "With or Without You"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AnoLancamento = 1991,
+                            ArtistaId = 2,
+                            Nome = "One"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AnoLancamento = 1975,
+                            ArtistaId = 3,
+                            Nome = "Bohemian Rhapsody"
+                        });
                 });
 
             modelBuilder.Entity("ScreenSound.Shared.Modelos.Modelos.Genero", b =>
@@ -106,6 +198,26 @@ namespace ScreenSound.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Generos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Descricao = "Gênero de música popular que se desenvolveu durante e após a década de 1950.",
+                            Nome = "Rock"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descricao = "Música popular brasileira, um estilo musical que surgiu no Brasil.",
+                            Nome = "MPB"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Descricao = "Música popular, geralmente orientada para o mercado comercial.",
+                            Nome = "Pop"
+                        });
                 });
 
             modelBuilder.Entity("GeneroMusica", b =>
