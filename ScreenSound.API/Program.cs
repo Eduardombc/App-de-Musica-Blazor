@@ -1,45 +1,51 @@
-using System.Text.Json.Serialization;
-using ScreenSound.API.EndPoints;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using ScreenSound.API.Endpoints;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
+using ScreenSound.Shared.Modelos.Modelos;
+using System.Data.SqlTypes;
+using System.Text.Json.Serialization;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ScreenSoundContext>((options) => {
+    options
+            .UseSqlServer(builder.Configuration["ConnectionStrings:ScreenSoundDB"])
+            .UseLazyLoadingProxies();
+});
+builder.Services.AddTransient<DAL<Artista>>();
+builder.Services.AddTransient<DAL<Musica>>();
+builder.Services.AddTransient<DAL<Genero>>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.AddCors(
+    options => options.AddPolicy(
+        "wasm",
+        policy => policy.WithOrigins([builder.Configuration["BackendUrl"] ?? "https://localhost:7089",
+            builder.Configuration["FrontendUrl"] ?? "https://localhost:7015"])
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(pol => true)
+            .AllowAnyHeader()
+            .AllowCredentials()));
 
 
-internal class Program
-{
-    private static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddDbContext<ScreenSoundContext>();
-        builder.Services.AddTransient<DAL<Artista>>();
-        builder.Services.AddTransient<DAL<Musica>>();
+app.UseCors("wasm");
 
-        builder.Services.AddEndpointsApiExplorer();
+app.UseStaticFiles();
 
-        builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+app.AddEndPointsArtistas();
+app.AddEndPointsMusicas();
+app.AddEndPointGeneros();
 
-        builder.Services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(policy =>
-            {
-                policy.AllowAnyOrigin()
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
-            });
-        });
+app.UseSwagger();
+app.UseSwaggerUI();
 
-
-        var app = builder.Build();
-        app.UseCors();
-
-
-        app.AddEndPointsArtistas();
-        app.AddEndPointsMusicas();
-        app.AddEndPointGeneros();
-        app.UseSwagger();
-        app.UseSwaggerUI();
-        app.UseHttpsRedirection();
-        app.Run();
-    }
-}
+app.Run();

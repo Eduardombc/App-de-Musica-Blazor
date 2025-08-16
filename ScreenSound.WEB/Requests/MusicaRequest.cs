@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace ScreenSound.WEB.Requests;
 
-public record MusicaRequest ([Required] string Nome, [Required] int Id, int AnoLancamento,ICollection<GeneroRequest> Generos = null);
+namespace ScreenSound.Web.Requests;
+
+public record MusicaRequest([Required] string nome, [Required] int ArtistaId, int anoLancamento, ICollection<GeneroRequest> Generos = null);
+

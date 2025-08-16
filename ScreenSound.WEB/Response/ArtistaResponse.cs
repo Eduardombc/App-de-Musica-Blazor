@@ -1,3 +1,3 @@
-﻿namespace ScreenSound.WEB.Response;
+﻿namespace ScreenSound.Web.Response;
 
-public record ArtistaResponse (int ArtistaId, string Nome, string Bio, string? FotoPerfil);
+public record ArtistaResponse(int Id, string Nome, string Bio, string? FotoPerfil);
